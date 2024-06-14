@@ -24,7 +24,7 @@ The board is based on a Raspberry Pi Core Microcontroller, with the following pe
 | GP4     | (uart_midi_tx?)           |                      |
 | GP5     | (uart_midi_rx?)           |                      |
 | GP6     |                           |                      |
-| GP7     |                           |                      |
+| GP7     | *neopixel*                | *neopixel*           |
 | GP8     |                           |                      |
 | GP9     | switch                    | swA                  |
 | GP10    | switch                    | swB                  |
@@ -130,43 +130,42 @@ import board
 import neopixel
 import time
 
-# List of GPIO pins to test for Neopixel control
-gpio_pins = [
-    board.GP1, board.GP2, board.GP3, board.GP6, board.GP7, board.GP8,
-    board.GP14, board.GP16, board.GP17, board.GP21, board.GP22,
-    board.GP26, board.GP27, board.GP28
-]
+def set_color(pixels, color):
+    pixels.fill(color)
+    pixels.show()
 
-# Number of Neopixels
-num_pixels = 30
-
-def test_neopixel_pin(pin):
+def test_neopixel_pin(pixels):
     try:
-        pixels = neopixel.NeoPixel(pin, num_pixels, auto_write=False)
-        pixels.fill((255, 0, 255))  # Red
-        pixels.show()
+        set_color(pixels, (255, 0, 0))
         time.sleep(0.5)
-        pixels.fill((0, 0, 0))  # Turn off
-        pixels.show()
-        print(f"Neopixels test pin {pin}")
+        set_color(pixels, (255, 255, 0))
+        time.sleep(0.5)
+        set_color(pixels, (0, 255, 255))
+        time.sleep(0.5)
+        set_color(pixels, (0, 0, 255))
+        time.sleep(0.5)
+        set_color(pixels, (0, 0, 0))  # Turn off
+        time.sleep(0.5)
     except Exception as e:
         print(f"Error testing {pin}: {e}")
 
+pin = board.GP7
+num_pixels = 30
+pixels = neopixel.NeoPixel(pin, num_pixels, auto_write=False)
+
 # Test each GPIO pin for Neopixel control
-for pin in gpio_pins:
+while True:
     print(f"Testing {pin}")
-    test_neopixel_pin(pin)
+    test_neopixel_pin(pixels)
     time.sleep(1)
+
 ```
 
 ## Display
 
 ## Wireless Module
 
-
-
-# Test code
-
+### Test code
 
 ### Gpio Loopback Test
 
