@@ -8,6 +8,9 @@ import time
 import adafruit_debouncer
 
 switches_config = (
+    ('encoderSW',  board.GP0),
+    ('encoderA',   board.GP2),
+    ('encoderB',   board.GP3),
     ('switch1',    board.GP1),
     ('switch2',    board.GP25),
     ('switch3',    board.GP24),

@@ -142,11 +142,6 @@ else:
 
 A lot of code to select the firmware mode.
 
-Pseudocode
-
-
-
-
 # Peripherals
 
 ## Midi Captain Blue
@@ -159,42 +154,42 @@ with the following peripherals:
 - Midi In/Out
 - 2 expression pedal Input
 - Battery
-- wireless module 
+- wireless module
 
 ### GPIO Assignment
 
-| GPIO | PERIPERAL        | PIN FUNCTION |
-| ---- | ---------------- | ------------ |
-| GP0  | switch           | sw1          |
-| GP1  | encoder switch   |              |
-| GP2  | encoder A        |              |
-| GP3  | encoder B        |              |
-| GP4  |                  |              |
-| GP5  |                  |              |
-| GP6  |                  |              |
-| GP7  | _neopixel_       | _neopixel_   |
-| GP8  | tft_pwm          |              |
-| GP9  | switch           | swA          |
-| GP10 | switch           | swB          |
-| GP11 | switch           | swC          |
-| GP12 | (debug_port??)   |              |
-| GP13 | (debug_port??)   |              |
-| GP14 |                  | tft_clk? 7   |
-| GP15 | (bootsel_pin???) | tft 8        |
-| GP16 | uart_midi_tx     |              |
-| GP17 | uart_midi_rx     |              |
-| GP18 | switch           | swD          |
-| GP19 | switch           | swDN         |
-| GP20 | switch           | swUP         |
-| GP21 |                  |              |
-| GP22 |                  |              |
-| GP23 | switch           | sw4          |
-| GP24 | switch           | sw3          |
-| GP25 | switch           | sw2          |
-| GP26 |                  |              |
-| GP27 |                  |              |
-| GP28 |                  |              |
-| GP29 |                  |              |
+| GPIO | PERIPERAL        | board lib pin / notes?  |
+| ---- | ---------------- | ----------------------- |
+| GP0  | encoder switch   |                         |
+| GP1  | switch1          |                         |
+| GP2  | encoder A        |                         |
+| GP3  | encoder B        |                         |
+| GP4  |                  |                         |
+| GP5  |                  |                         |
+| GP6  |                  |                         |
+| GP7  | neopixel GPIO    |                         |
+| GP8  |                  | tft_pwm                 |
+| GP9  | switchA          |                         |
+| GP10 | switchB          |                         |
+| GP11 | switchC          |                         |
+| GP12 |                  | (debug_port??)          |
+| GP13 |                  | (debug_port??)          |
+| GP14 |                  | tft_clk? 7              |
+| GP15 |                  | tft 8? (bootsel_pin???) |
+| GP16 | uart_midi_tx     |                         |
+| GP17 | uart_midi_rx     |                         |
+| GP18 | switchD          |                         |
+| GP19 | switchDown       |                         |
+| GP20 | switchUp         |                         |
+| GP21 |                  |                         |
+| GP22 |                  |                         |
+| GP23 | switch4          | SMPS_MODE               |
+| GP24 | switch3          | VBUS_SENSE              |
+| GP25 | switch2          | LED                     |
+| GP26 |                  | GP26_A0                 |
+| GP27 | ExpPdl1          | GP27_A1                 |
+| GP28 | ExpPdl2          | GP28_A2                 |
+| GP29 |                  | VOLTAGE_MONITOR         |
 
 # Reverse engineering code
 
