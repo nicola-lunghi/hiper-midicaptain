@@ -25,14 +25,14 @@ The board is based on a Raspberry Pi Core Microcontroller, with the following pe
 | GP5  |                  |              |
 | GP6  |                  |              |
 | GP7  | _neopixel_       | _neopixel_   |
-| GP8  |                  |              |
+| GP8  | tft_pwm          |              |
 | GP9  | switch           | swA          |
 | GP10 | switch           | swB          |
 | GP11 | switch           | swC          |
 | GP12 | (debug_port??)   |              |
 | GP13 | (debug_port??)   |              |
-| GP14 |                  |              |
-| GP15 | (bootsel_pin???) |              |
+| GP14 |                  | tft_clk? 7   |
+| GP15 | (bootsel_pin???) | tft 8        |
 | GP16 | uart_midi_tx     |              |
 | GP17 | uart_midi_rx     |              |
 | GP18 | switch           | swD          |
@@ -184,6 +184,8 @@ Adafruit 1.54" 240x240 Wide Angle TFT LCD Display with MicroSD | ST7789 with EYE
 
 ## Pin Assignments
 
+See also: [https://lupyuen.github.io/articles/st7789](https://lupyuen.github.io/articles/st7789)
+
 From [datasheet](https://cdn-shop.adafruit.com/product-files/4421/4421_specs.pdf):
 
 | Pin No. | Symbol    | I/O | Function                                                                                  | Remark |
@@ -248,16 +250,16 @@ Backlight Pin
 
 ### Pinout
 
-| Pin No. | NAME    | RPI GPIO | Description                    |
-| ------- | ------- |--------- | -------------------------------|
-| 1       | GND     |          |                                |
-| 2       |         |          |                                |
-| 3       | VIN     |          |                                |
-| 4       |         | GPIO12   |                                |
-| 5       | LITE??  | GPIO16   | RC  network PWM?               |
-| 6       |         | GPIO13   |                                |
-| 7       |         | GPIO14   |                                |
-| 8       |         | GPIO15   |                                |
+| Pin No. | NAME        | RPI GPIO | Description                    |
+| ------- | ----------- |--------- | -------------------------------|
+| 1       | GND         |          |                                |
+| 2       | PWM         |          |                                |
+| 3       | VIN         |          |                                |
+| 4       | DATA???     | GPIO12   |                                |
+| 5       |             | GPIO16   | RC  network PWM?               |
+| 6       | DATA???     | GPIO13   |                                |
+| 7       | Inverted?   | GPIO14   |                                |
+| 8       | Inverted?   | GPIO15   |                                |
 
 ## Wireless Module
 
