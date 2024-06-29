@@ -5,13 +5,15 @@ This is based on reverse engineering, and is make available to the public hoping
 
 # Board Description
 
-The board is based on a Raspberry Pi Core Microcontroller, with the following peripherals:
+The board is based on a Raspberry Pi Core Microcontroller ([Datasheet](https://datasheets.raspberrypi.com/rp2040/rp2040-datasheet.pdf)),
+with the following peripherals:
 
 - 10 footswitches
+- 30 RGB led, separately addressables
 - Midi In/Out
 - 2 expression pedal Input
-- 30 RGB led, separately addressables
 - Battery
+- wireless module
 
 # GPIO Assignment
 
