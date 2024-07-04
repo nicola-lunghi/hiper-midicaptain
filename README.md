@@ -197,81 +197,12 @@ with the following peripherals:
 
 ### Uart Pins
 
-UART pins can be assigned to any GPIO. default pinout for Raspberry pi pico board:
-
-- UART0:
-  | board.GP0 (TX) |
-  | b------------) |
-- UART1:
-  | board.GP4 (TX) |
-  | b------------) |
+UART pins can be assigned to any GPIO.
 
 ### Gpio Loopback Test
 
 1. set a midi cable between midi in and out
 2. run the following
-
-```python
-import board
-import digitalio
-import time
-
-# Pins to test for loopback (excluding known switch pins and UART1 TX)
-pins_to_test = [
-    # board.GP0, # SW1
-    board.GP1,
-    board.GP2,
-    board.GP3,
-    board.GP4, # uart1 tx?
-    board.GP5, # uart1 rx?
-    board.GP6,
-    # board.GP7, # NEOPIXEL
-    board.GP8,
-    # board.GP12, board.GP13, # debug port?
-    board.GP14,
-    # board.GP15, # bootsel?
-    board.GP16,
-    board.GP17,
-    # board.GP18, board.GP19, board.GP20, # SW
-    board.GP21,
-    board.GP22,
-    # board.GP23, board.GP24, board.GP25, # SW
-    board.GP26,
-    board.GP27,
-    board.GP28,
-    board.GP29,
-]
-
-def gpio_loopback_test(tx_pin, pins_to_test):
-    # Set up TX pin as output
-    tx = digitalio.DigitalInOut(tx_pin)
-    tx.direction = digitalio.Direction.OUTPUT
-
-    # Set up test pins as inputs
-    inputs = []
-    for pin in pins_to_test:
-        inp = digitalio.DigitalInOut(pin)
-        inp.direction = digitalio.Direction.INPUT
-        inputs.append(inp)
-
-    # Test high value
-    tx.value = True
-    time.sleep(0.1)  # Small delay to ensure value is set
-    print(f"Set {tx_pin} HIGH")
-    for i, pin in enumerate(pins_to_test):
-        print(f"Pin {pin} value: {inputs[i].value}")
-
-    # Test low value
-    tx.value = False
-    time.sleep(0.1)  # Small delay to ensure value is set
-    print(f"Set {tx_pin} LOW")
-    for i, pin in enumerate(pins_to_test):
-        print(f"Pin {pin} value: {inputs[i].value}")
-
-# Perform loopback test on GP4
-print("Performing GPIO loopback test on GP4")
-gpio_loopback_test(board.GP4, pins_to_test)
-```
 
 ## Neopixel Led
 
@@ -279,41 +210,7 @@ gpio_loopback_test(board.GP4, pins_to_test)
 
 ### Test Code
 
-```python
-import board
-import neopixel
-import time
-
-def set_color(pixels, color):
-    pixels.fill(color)
-    pixels.show()
-
-def test_neopixel_pin(pixels):
-    try:
-        set_color(pixels, (255, 0, 0))
-        time.sleep(0.5)
-        set_color(pixels, (255, 255, 0))
-        time.sleep(0.5)
-        set_color(pixels, (0, 255, 255))
-        time.sleep(0.5)
-        set_color(pixels, (0, 0, 255))
-        time.sleep(0.5)
-        set_color(pixels, (0, 0, 0))  # Turn off
-        time.sleep(0.5)
-    except Exception as e:
-        print(f"Error testing {pin}: {e}")
-
-neo_pin = board.GP7
-num_pixels = 30
-pixels = neopixel.NeoPixel(neo_pin, num_pixels, auto_write=False)
-
-# Test each GPIO pin for Neopixel control
-while True:
-    print(f"Testing {neo_pin}")
-    test_neopixel_pin(pixels)
-    time.sleep(1)
-
-```
+[scripts/led.py](./scripts/led.py)
 
 ## Display
 
@@ -358,7 +255,9 @@ From [datasheet](https://cdn-shop.adafruit.com/product-files/4421/4421_specs.pdf
 
 ## EYESPI Connector
 
-![Eye Pinouts](./images/adafruit_products_EYE_pinouts.jpg?raw=true "EYE Pinouts")
+![Eye Pinouts](./docs/images/adafruit_products_EYE_pinouts.jpg?raw=true "EYE Pinouts")
+
+![Eye Pinouts](./docs/images/adafruit_products_EYE_top_headers.jpg?raw=true "EYE Top Headers")
 
 ### Pin Description
 
@@ -406,64 +305,8 @@ Backlight Pin
 
 ## Wireless Module
 
-### Test code
+The wireless module is a "wireless mouse" serial RF IC
 
-### Gpio Loopback Test
+[BK2461 Datasheet](https://www.alldatasheet.com/datasheet-pdf/pdf/1132247/ETC2/BK2461.html)
 
-1. set a midi cable between midi in and out
-2. run the following
-
-```python
-import board
-import digitalio
-import time
-
-#   1          2           3           4           UP/DWN
-switch_pins = [
-    board.GP0, board.GP25, board.GP24, board.GP23, board.GP20,
-    board.GP9, board.GP10, board.GP11, board.GP18, board.GP19,
-]
-
-# Pins to test for loopback (excluding known switch pins and UART1 TX)
-pins_to_test = [
-    board.GP1, board.GP2, board.GP3,
-    # board.GP5, # uart1 rx?
-    board.GP6, board.GP7, board.GP8,
-    # board.GP12, board.GP13, # debug port?
-    board.GP14,
-    # board.GP15, # bootsel?
-    board.GP16, board.GP17,
-    board.GP21, board.GP22,
-    board.GP26, board.GP27, board.GP28, board.GP29,
-]
-
-def gpio_loopback_test(tx_pin, pins_to_test):
-    # Set up TX pin as output
-    tx = digitalio.DigitalInOut(tx_pin)
-    tx.direction = digitalio.Direction.OUTPUT
-
-    # Set up test pins as inputs
-    inputs = []
-    for pin in pins_to_test:
-        inp = digitalio.DigitalInOut(pin)
-        inp.direction = digitalio.Direction.INPUT
-        inputs.append(inp)
-
-    # Test high value
-    tx.value = True
-    time.sleep(0.1)  # Small delay to ensure value is set
-    print(f"Set {tx_pin} HIGH")
-    for i, pin in enumerate(pins_to_test):
-        print(f"Pin {pin} value: {inputs[i].value}")
-
-    # Test low value
-    tx.value = False
-    time.sleep(0.1)  # Small delay to ensure value is set
-    print(f"Set {tx_pin} LOW")
-    for i, pin in enumerate(pins_to_test):
-        print(f"Pin {pin} value: {inputs[i].value}")
-
-# Perform loopback test on GP4
-print("Performing GPIO loopback test on GP4")
-gpio_loopback_test(board.GP4, pins_to_test)
-```
+![Image](./docs/images/midicaptain-rf.jpg?raw=true "rf module BK2462")
