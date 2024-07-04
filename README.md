@@ -224,6 +224,20 @@ Adafruit 1.54" 240x240 Wide Angle TFT LCD Display with MicroSD | ST7789 with EYE
 
 ## Pin Assignments
 
+the spi interface seems to be connected to GPIO12-GPIO14 (bottom left of rp2040)
+
+![Image](./docs/images/midicaptain_display.JPG?raw=true "display pins")
+
+here's what i got so far
+
+| GPIO | board lib pin / notes?  |
+| ---- | ----------------------- |
+| GP8  | tft_pwm                 |       |
+| GP12 |         |
+| GP13 |                         |
+| GP14 | tft_clk? pin 7              |
+| GP15 | tft pin 8?|
+
 See also: [https://lupyuen.github.io/articles/st7789](https://lupyuen.github.io/articles/st7789)
 
 From [datasheet](https://cdn-shop.adafruit.com/product-files/4421/4421_specs.pdf):
