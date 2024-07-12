@@ -168,14 +168,14 @@ with the following peripherals:
 | GP5  |                  |                         |
 | GP6  |                  |                         |
 | GP7  | neopixel GPIO    |                         |
-| GP8  |                  | tft_pwm                 |
+| GP8  | tft_pwm          |                         |
 | GP9  | switchA          |                         |
 | GP10 | switchB          |                         |
 | GP11 | switchC          |                         |
-| GP12 |                  | (debug_port??)          |
-| GP13 |                  | (debug_port??)          |
-| GP14 |                  | tft_clk? 7              |
-| GP15 |                  | tft 8? (bootsel_pin???) |
+| GP12 | tft_dc           | (debug_port??)          |
+| GP13 | tft_cs           | (debug_port??)          |
+| GP14 | tft_spi_clk      |                         |
+| GP15 | tft_spi_mosi     |                         |
 | GP16 | uart_midi_tx     |                         |
 | GP17 | uart_midi_rx     |                         |
 | GP18 | switchD          |                         |
@@ -224,98 +224,23 @@ Adafruit 1.54" 240x240 Wide Angle TFT LCD Display with MicroSD | ST7789 with EYE
 
 ## Pin Assignments
 
-the spi interface seems to be connected to GPIO12-GPIO14 (bottom left of rp2040)
+```python
+tft_pwm = board.GP8
+tft_dc = board.GP12
+tft_cs = board.GP13
+spi_clk = board.GP14
+spi_mosi = board.GP15
 
-![Image](./docs/images/midicaptain_display.JPG?raw=true "display pins")
+spi = busio.SPI(spi_clk, spi_mosi)
 
-here's what i got so far
-
-| GPIO | board lib pin / notes?  |
-| ---- | ----------------------- |
-| GP8  | tft_pwm                 |       |
-| GP12 |         |
-| GP13 |                         |
-| GP14 | tft_clk? pin 7              |
-| GP15 | tft pin 8?|
-
-See also: [https://lupyuen.github.io/articles/st7789](https://lupyuen.github.io/articles/st7789)
-
-From [datasheet](https://cdn-shop.adafruit.com/product-files/4421/4421_specs.pdf):
-
-| Pin No. | Symbol    | I/O | Function                                                                                  | Remark |
-| ------- | --------- | --- | ----------------------------------------------------------------------------------------- | ------ |
-| 1       | LEDA      | P   | LED+                                                                                      |        |
-| 2       | LEDK      | P   | LED                                                                                       |        |
-| 3       | IM2       | I   |                                                                                           |        |
-| 4       | IM1       | I   |                                                                                           |        |
-| 5       | IM0       | I   |                                                                                           |        |
-| 6       | VCI(2.8V) | P   | Power Supply(2.8V)                                                                        |        |
-| 7       | DB7       | I/O | DATA BUS                                                                                  |        |
-| 8       | DB6       | I/O | DATA BUS                                                                                  |        |
-| 9       | DB5       | I/O | DATA BUS                                                                                  |        |
-| 10      | DB4       | I/O | DATA BUS                                                                                  |        |
-| 11      | DB3       | I/O | DATA BUS                                                                                  |        |
-| 12      | DB2       | I/O | DATA BUS                                                                                  |        |
-| 13      | DB1       | I/O | DATA BUS                                                                                  |        |
-| 14      | DB0       | I/O | DATA BUS                                                                                  |        |
-| 15      | RD        | I   |                                                                                           |        |
-| 16      | WR        | I   |                                                                                           |        |
-| 17      | RS        | I   |                                                                                           |        |
-| 18      | CS        | I   | Chip Selection. Pin-Low Enable.                                                           |        |
-| 19      | TE        | O   | Tearing effect output pin to synchronies MCU to frame rate, activated by S/W command.     |        |
-| 20      | RESET     | I   | This signal will reset the device and it must be applied to properly initialize the chip. |        |
-| 21      | SDA       | I/O | serial input/output signal in serial interface mode.                                      |        |
-| 22      | GND       | P   | Ground                                                                                    |        |
-
-## EYESPI Connector
-
-![Eye Pinouts](./docs/images/adafruit_products_EYE_pinouts.jpg?raw=true "EYE Pinouts")
-
-![Eye Pinouts](./docs/images/adafruit_products_EYE_top_headers.jpg?raw=true "EYE Top Headers")
-
-### Pin Description
-
-- Vin: This is the power pin. To power the board (and thus your display), connect
-  to the same power as the logic level of your microcontroller, e.g. for a 3V
-  micro like a Feather, use 3V, and for a 5V micro like an Arduino, use 5V. |
-- Gnd: This is common ground for power and logic.
-
-SPI
-
-- SCK : This is the SPI clock input pin.
-- MOSI : This is the SPI MOSI (Microcontroller Out / Serial In) pin. It is used to send data from the microcontroller to the SD card and/or display.
-- MISO : This is the SPI MISO (Microcontroller In / Serial Out) pin. It's used for the SD card. It isn't used for the display because it's write-only. It is 3.3V logic out (but can be read by 5V logic).
-- DC : This is the display SPI data/command selector pin.
-- RST : This is the display reset pin. Connecting to ground resets the display! It's best to have this pin controlled by the library so the display is reset cleanly, but you can also connect it to the Microcontroller's Reset pin, which works for most cases. Often, there is an automatic-reset chip on the display which will reset it on power-up, making this connection unnecessary in that case.
-- TCS : This is the TFT or eInk SPI chip select pin.
-
-Backlight Pin
-
-- Lite : This is the PWM input for the backlight control. It is by default pulled high (backlight on), however, you can PWM at any frequency or pull down to turn the backlight off. |
-
-### Wiring
-
-- 3.3V to VIN
-- GND to GND
-- SCK to SCK clock
-- MO to MOSI Seriial Out
-- MI to MISO Serial In
-- D9 to RST  Reset
-- D5 to TCS  Chip select
-- LITE backlight pin??
-
-### Pinout
-
-| Pin No. | NAME        | RPI GPIO | Description                    |
-| ------- | ----------- |--------- | -------------------------------|
-| 1       | GND         |          |                                |
-| 2       | PWM         |          |                                |
-| 3       | VIN         |          |                                |
-| 4       | DATA???     | GPIO12   |                                |
-| 5       |             | GPIO16   | RC  network PWM?               |
-| 6       | DATA???     | GPIO13   |                                |
-| 7       | Inverted?   | GPIO14   |                                |
-| 8       | Inverted?   | GPIO15   |                                |
+display_bus = displayio.FourWire(spi, command=tft_dc, chip_select=tft_cs)
+display = ST7789(
+    display_bus, width=240, height=240,
+    rowstart=80,
+    # colstart=53,
+    rotation=180,
+)
+```
 
 ## Wireless Module
 
